@@ -1,5 +1,6 @@
 # b_splines
 
-npm install
++ [B Spline Curves](https://chriskr.github.io/b_splines/src/index.html)
 
-npm run build
+# npm install
+# npm run build
