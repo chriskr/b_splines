@@ -1,0 +1,55 @@
+svg {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.input-point {
+  fill: hsla(0, 0%, 0%, 0.001);
+  stroke-width: 1px;
+  stroke: hsla(0, 0%, 30%, .3);
+}
+
+.input-point-group:hover .input-point,
+.input-point-group.selected .input-point {
+  fill: hsla(220, 70%, 50%, .8);
+  stroke: hsla(0, 0%, 30%, .8);
+}
+
+.input-point-line {
+  stroke-width: 1px;
+  stroke: hsla(220, 70%, 50%, .3);
+}
+
+.b-spline {
+  fill: none;
+  stroke-width: 1px;
+  stroke: hsl(0, 100%, 50%);
+}
+
+.fill .b-spline {
+  fill: hsl(220, 100%, 50%);
+  stroke-width: 0;
+}
+
+.point, 
+.b-point {
+  fill: hsla(0, 0%, 0%, 0.001);
+  stroke-width: 1px;
+  stroke: hsla(0, 0%, 30%, .3);
+}
+
+.test-point {
+  fill: red;
+}
+
+.b-point:hover,
+.b-target {
+  fill: hsla(220, 70%, 50%, .8);
+}
+
+.line {
+  pointer-events: none;
+  stroke-width: 1px;
+  stroke: hsla(220, 70%, 50%, .3);
+}

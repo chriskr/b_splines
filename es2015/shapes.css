@@ -1,0 +1,47 @@
+#shapes {
+  bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  list-style: none;
+  margin: 0;
+  padding: 20px;
+  position: absolute;
+  right: -120px;
+  top: 0;
+  transition: right 0.3s;
+  width: 80px;
+  z-index: 100;
+}
+.show-shapes #shapes {
+  right: 0;
+}
+
+.thumbnail {
+  fill: hsl(0, 0%, 20%);
+  position: initial;
+  width: 100%;
+}
+
+#shapes-button {
+  background: none;
+  border: none;
+  order: 3;
+}
+
+#shapes-button:focus,
+#shapes-button:active {
+  outline: none;
+}
+
+#shapes-button::before {
+  content: url(arrow.svg);
+  display: block;
+  height: 24px;
+  transition: transform 0.3s;
+  width: 24px;
+}
+
+.show-shapes #shapes-button::before {
+  transform: rotateY(180deg);
+}

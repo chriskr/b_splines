@@ -1,0 +1,79 @@
+html {
+  background: white;
+  background-image: linear-gradient(hsla(0, 0%, 0%, 0.02), 
+                                    hsla(0, 0%, 0%, 0.02) 1px,  
+                                    hsla(0, 0%, 0%, 0) 0);
+  background-size: 100% 7px;
+  background-repeat: repeat-y;
+  font: menu;
+  font-size: 16px;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  padding: 12px 20px;
+}
+
+h1 {
+  font-size: 4vw;
+  font-weight: lighter;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+}
+
+#controls {
+  align-items: center;
+  bottom: 10px;
+  display: flex;
+  left: 5px;
+  pointer-events: none;
+  position: absolute;
+  right: 5px;
+  z-index: 101;
+}
+
+#controls label,
+#controls button {
+  margin: 0 10px;
+  pointer-events: all;
+}
+
+#controls::after {
+  content: '';
+  flex: 1;
+  order: 2;
+}
+
+label input {
+  vertical-align: bottom;
+}
+
+#use-modern-browser {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 520px;
+  height: 80px;
+  line-height: 80px;
+  font-size: 22px;
+  margin-top: -40px;
+  margin-left: -260px;
+  border: 3px solid hsl(0, 0%, 30%);
+  border-radius: 7px;
+  text-align: center;
+  font-weight: bold;
+}
