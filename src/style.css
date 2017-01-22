@@ -33,6 +33,7 @@ a {
   position: relative;
   z-index: 1;
   color: inherit;
+  margin-right: 20px;
 }
 
 #controls {
