@@ -29,7 +29,6 @@ var SvgBSplines = function () {
     this.dragManagerSPoints_ = new DragManagerSPoints(this);
     this.dragManagerBPoints_ = new DragManagerBPoints(this);
     this.ghostSelect_ = new GhostSelect(this);
-    this.contextmenu_ = new Contextmenu();
     this.svg_ = document.body.appendTemplate(SvgTemplates.svg());
     this.path_ = this.svg_.appendTemplate(SvgTemplates.path());
     this.width_ = window.innerWidth;
@@ -52,8 +51,7 @@ var SvgBSplines = function () {
         });
       }
     });
-    this.contextmenu_.addEntry({
-      id: 'delete-s-point',
+    Contextmenu.getInstance().addEntry({
       label: 'Delete point',
       showIf: function showIf(event) {
         return Boolean(event.target.closest('.input-point-group'));
@@ -62,8 +60,7 @@ var SvgBSplines = function () {
         return _this.deletePoint_(event);
       }
     });
-    this.contextmenu_.addEntry({
-      id: 'insert-s-point',
+    Contextmenu.getInstance().addEntry({
       label: 'Insert point',
       showIf: function showIf(event) {
         return _this.getInsertionIndex_(event) > -1;

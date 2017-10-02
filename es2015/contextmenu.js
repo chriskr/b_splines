@@ -4,7 +4,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var CONTEXT_MENU_KEY = Symbol('context-menu-key');
+
 var Contextmenu = function () {
+  _createClass(Contextmenu, null, [{
+    key: 'getInstance',
+    value: function getInstance() {
+      if (!this[CONTEXT_MENU_KEY]) {
+        this[CONTEXT_MENU_KEY] = new Contextmenu();
+      }
+      return this[CONTEXT_MENU_KEY];
+    }
+  }]);
+
   function Contextmenu() {
     var _this = this;
 
@@ -13,6 +25,7 @@ var Contextmenu = function () {
     this.event_ = null;
     this.entries_ = [];
     this.contextmenu_ = null;
+    this.id_ = 1;
     document.addEventListener('contextmenu', function (event) {
       return _this.handleContextmenu_(event);
     });
@@ -21,7 +34,11 @@ var Contextmenu = function () {
   _createClass(Contextmenu, [{
     key: 'addEntry',
     value: function addEntry(entry) {
-      this.entries_.push(entry);
+      var label = entry.label,
+          showIf = entry.showIf,
+          callback = entry.callback;
+
+      this.entries_.push(new MenuEntry(this.getId_(), label, showIf, callback));
     }
   }, {
     key: 'handleContextmenu_',
@@ -44,6 +61,14 @@ var Contextmenu = function () {
       });
       if (entries.length) {
         this.contextmenu_ = document.body.appendTemplate(Contextmenu.Templates.contextmenu(event.clientX, event.clientY, entries));
+        var menu = this.contextmenu_.firstElementChild;
+        var box = menu.getBoundingClientRect();
+        if (box.right >= window.innerWidth) {
+          menu.style.left = event.clientX - box.width + 'px';
+        }
+        if (box.bottom >= window.innerHeight) {
+          menu.style.top = event.clientY - box.height + 'px';
+        }
         this.contextmenu_.addEventListener('click', function (event) {
           return _this2.clickHandler_(event);
         });
@@ -66,6 +91,11 @@ var Contextmenu = function () {
       }
       this.contextmenu_.remove();
       this.contextmenu_ = null;
+    }
+  }, {
+    key: 'getId_',
+    value: function getId_() {
+      return 'menu-entry-' + this.id_++;
     }
   }]);
 

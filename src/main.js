@@ -1,6 +1,6 @@
 'use strict';
 
-window.onload = () => {
+window.onload = function() {
   try {
     window.svgBSplines = new SvgBSplines();
     window.shapes = new Shapes(window.svgBSplines);

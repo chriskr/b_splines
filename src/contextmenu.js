@@ -1,15 +1,28 @@
 'use strict';
 
+const CONTEXT_MENU_KEY = Symbol('context-menu-key');
+
 class Contextmenu {
+  static getInstance() {
+    if (!this[CONTEXT_MENU_KEY]) {
+      this[CONTEXT_MENU_KEY] = new Contextmenu();
+    }
+    return this[CONTEXT_MENU_KEY];
+  }
+
   constructor() {
     this.event_ = null;
     this.entries_ = [];
     this.contextmenu_ = null;
+    this.id_ = 1;
     document.addEventListener(
         'contextmenu', event => this.handleContextmenu_(event));
   }
 
-  addEntry(entry) { this.entries_.push(entry); }
+  addEntry(entry) {
+    const {label, showIf, callback} = entry;
+    this.entries_.push(new MenuEntry(this.getId_(), label, showIf, callback));
+  }
 
   handleContextmenu_(event) {
     this.event_ = event;
@@ -25,8 +38,17 @@ class Contextmenu {
     const entries =
         this.entries_.filter(entry => !entry.showIf || entry.showIf(event));
     if (entries.length) {
-      this.contextmenu_ = document.body.appendTemplate(
-          Contextmenu.Templates.contextmenu(event.clientX, event.clientY, entries));
+      this.contextmenu_ =
+          document.body.appendTemplate(Contextmenu.Templates.contextmenu(
+              event.clientX, event.clientY, entries));
+      const menu = this.contextmenu_.firstElementChild;
+      const box = menu.getBoundingClientRect();
+      if (box.right >= window.innerWidth) {
+        menu.style.left = `${event.clientX - box.width}px`;
+      }
+      if (box.bottom >= window.innerHeight) {
+        menu.style.top = `${event.clientY - box.height}px`;
+      }
       this.contextmenu_.addEventListener(
           'click', event => this.clickHandler_(event));
       return true;
@@ -46,6 +68,10 @@ class Contextmenu {
     }
     this.contextmenu_.remove();
     this.contextmenu_ = null;
+  }
+
+  getId_() {
+    return `menu-entry-${this.id_++}`;
   }
 }
 

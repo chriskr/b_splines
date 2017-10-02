@@ -2,10 +2,27 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Shapes = function () {
   _createClass(Shapes, null, [{
+    key: 'getStorageKey',
+    value: function getStorageKey(key) {
+      return 'shape-' + key;
+    }
+  }, {
+    key: 'extractKey',
+    value: function extractKey(key) {
+      return Number.parseInt(key.split('-')[1]);
+    }
+  }, {
+    key: 'SHAPE_KEYS',
+    get: function get() {
+      return 'shape-keys';
+    }
+  }, {
     key: 'shapes',
     get: function get() {
       return [{
@@ -48,28 +65,103 @@ var Shapes = function () {
     _classCallCheck(this, Shapes);
 
     this.svgBSplines_ = svgBSplines;
-    var shapeList = document.body.appendTemplate(Shapes.Templates.shapeList());
-    shapeList.appendTemplate(Shapes.shapes.map(function (shape) {
-      return Shapes.Templates.shapeItem(svgBSplines.getSvgTemplate(shape));
-    }));
-    shapeList.addEventListener('click', function (event) {
+    this.shapeList_ = document.body.appendTemplate(Shapes.Templates.shapeList());
+    this.shapeList_.addEventListener('click', function (event) {
       return _this.handleClick_(event);
+    });
+    this.shapes_ = this.updateShapeList_();
+    Contextmenu.getInstance().addEntry({
+      label: 'Delete shape',
+      showIf: function showIf(event) {
+        return _this.getStorageKeyFromEvent_(event) !== '';
+      },
+      callback: function callback(event) {
+        return _this.deleteStorageKey_(event);
+      }
     });
   }
 
   _createClass(Shapes, [{
+    key: 'toggleShowShapeList',
+    value: function toggleShowShapeList() {
+      document.body.classList.toggle('show-shapes');
+    }
+  }, {
+    key: 'storeShape',
+    value: function storeShape() {
+      var data = this.svgBSplines_.export();
+      var keys = this.getShapeKeys_();
+      var newKey = 1;
+      while (keys.includes(newKey)) {
+        newKey++;
+      }
+      keys.push(newKey);
+      data.storageKey = Shapes.getStorageKey(newKey);
+      this.storeShapeKeys_(keys);
+      this.storeShape_(data);
+      this.shapes_ = this.updateShapeList_();
+    }
+  }, {
+    key: 'getShapeKeys_',
+    value: function getShapeKeys_() {
+      return window.localStorage.getJSONItem(Shapes.SHAPE_KEYS, []);
+    }
+  }, {
+    key: 'storeShapeKeys_',
+    value: function storeShapeKeys_(keys) {
+      window.localStorage.setJSONItem(Shapes.SHAPE_KEYS, keys);
+    }
+  }, {
+    key: 'getShape_',
+    value: function getShape_(key) {
+      return window.localStorage.getJSONItem(Shapes.getStorageKey(key));
+    }
+  }, {
+    key: 'storeShape_',
+    value: function storeShape_(data) {
+      window.localStorage.setJSONItem(data.storageKey, data);
+    }
+  }, {
+    key: 'updateShapeList_',
+    value: function updateShapeList_() {
+      var _this2 = this;
+
+      var list = Shapes.shapes.slice();
+      list.push.apply(list, _toConsumableArray(this.getShapeKeys_().map(function (key) {
+        return _this2.getShape_(key);
+      })));
+      this.shapeList_.cleanAppendTemplate(list.map(function (shape) {
+        return Shapes.Templates.shapeItem(_this2.svgBSplines_.getSvgTemplate(shape), shape.storageKey);
+      }));
+      return list;
+    }
+  }, {
+    key: 'getStorageKeyFromEvent_',
+    value: function getStorageKeyFromEvent_(event) {
+      var target = event.target.closest('[data-storage-key]');
+      return target !== null ? target.dataset.storageKey : '';
+    }
+  }, {
+    key: 'deleteStorageKey_',
+    value: function deleteStorageKey_(event) {
+      var key = this.getStorageKeyFromEvent_(event);
+      if (key !== '') {
+        window.localStorage.removeItem(key);
+        var keys = this.getShapeKeys_();
+        var index = keys.indexOf(Shapes.extractKey(key));
+        keys.splice(index, 1);
+        this.storeShapeKeys_(keys);
+        this.shapes_ = this.updateShapeList_();
+      }
+    }
+  }, {
     key: 'handleClick_',
     value: function handleClick_(event) {
       var li = event.target.closest('li');
       if (li) {
         var index = Array.from(li.parentNode.children).indexOf(li);
-        this.svgBSplines_.load(Shapes.shapes[index]);
+        this.svgBSplines_.load(this.shapes_[index]);
       }
-    }
-  }, {
-    key: 'toggleShowShapeList',
-    value: function toggleShowShapeList() {
-      document.body.classList.toggle('show-shapes');
     }
   }]);
 
@@ -88,8 +180,8 @@ Shapes.Templates = function () {
     }
   }, {
     key: 'shapeItem',
-    value: function shapeItem(svgTemplate) {
-      return ['li', svgTemplate];
+    value: function shapeItem(svgTemplate, storageKey) {
+      return ['li', { 'data-storage-key': storageKey }, svgTemplate];
     }
   }]);
 

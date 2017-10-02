@@ -1,7 +1,7 @@
 html {
   background: white;
-  background-image: linear-gradient(hsla(0, 0%, 0%, 0.02), 
-                                    hsla(0, 0%, 0%, 0.02) 1px,  
+  background-image: linear-gradient(hsla(0, 0%, 0%, 0.02),
+                                    hsla(0, 0%, 0%, 0.02) 1.1px,
                                     hsla(0, 0%, 0%, 0) 0);
   background-size: 100% 7px;
   background-repeat: repeat-y;

@@ -57,17 +57,13 @@ var DragManagerSPoints = function () {
   }, {
     key: 'updateView_',
     value: function updateView_(event) {
-      var _this3 = this;
-
       if (this.dragPoints_.length) {
-        (function () {
-          var x = event.clientX;
-          var y = event.clientY;
-          _this3.dragPoints_.forEach(function (point) {
-            return point.updateDelta(x, y);
-          });
-          _this3.svgBSplines_.updatePath();
-        })();
+        var x = event.clientX;
+        var y = event.clientY;
+        this.dragPoints_.forEach(function (point) {
+          return point.updateDelta(x, y);
+        });
+        this.svgBSplines_.updatePath();
       }
     }
   }, {

@@ -17,9 +17,13 @@
   right: 0;
 }
 
+#shapes li {
+  flex: 1;
+}
+
 .thumbnail {
   fill: hsl(0, 0%, 20%);
-  position: initial;
+  position: static;
   width: 100%;
 }
 

@@ -8,7 +8,6 @@ class SvgBSplines {
     this.dragManagerSPoints_ = new DragManagerSPoints(this);
     this.dragManagerBPoints_ = new DragManagerBPoints(this);
     this.ghostSelect_ = new GhostSelect(this);
-    this.contextmenu_ = new Contextmenu();
     this.svg_ = document.body.appendTemplate(SvgTemplates.svg());
     this.path_ = this.svg_.appendTemplate(SvgTemplates.path());
     this.width_ = window.innerWidth;
@@ -26,14 +25,12 @@ class SvgBSplines {
             requestAnimationFrame(() => this.resizeHandler_());
       }
     });
-    this.contextmenu_.addEntry({
-      id: 'delete-s-point',
+    Contextmenu.getInstance().addEntry({
       label: 'Delete point',
       showIf: event => Boolean(event.target.closest('.input-point-group')),
       callback: event => this.deletePoint_(event),
     });
-    this.contextmenu_.addEntry({
-      id: 'insert-s-point',
+    Contextmenu.getInstance().addEntry({
       label: 'Insert point',
       showIf: event => this.getInsertionIndex_(event) > -1,
       callback:

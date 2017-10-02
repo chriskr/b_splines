@@ -1,22 +1,25 @@
 <!doctype html>
 <title>B-Spline Curves</title>
 <meta charset=utf-8>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel=icon href=/favicon.png>
 <link rel=stylesheet href=style.css>
 <link rel=stylesheet href=svg.css>
 <link rel=stylesheet href=contextmenu.css>
 <link rel=stylesheet href=ghost_select.css>
 <link rel=stylesheet href=shapes.css>
+<script src=/polyfills/polyfills.js></script>
 <script src=matrix.js></script>
 <script src=b_splines.js></script>
 <script src=bragi_light.js></script>
-<script src=element_prototype_polyfill.js></script>
+<script src=storage_prototype.js></script>
 <script src=ghost_select.js></script>
 <script src=svg_b_splines.js></script>
 <script src=s_point.js></script>
 <script src=drag_manager_s_points.js></script>
 <script src=drag_manager_b_points.js></script>
 <script src=svg_templates.js></script>
+<script src=menu_entry.js></script>
 <script src=contextmenu.js></script>
 <script src=shapes.js></script>
 <script src=main.js></script>
@@ -31,6 +34,7 @@
   <label><input type=checkbox name=fill>Fill</label>
   <button onclick=window.svgBSplines.reset()>Reset</button>
   <button onclick=window.svgBSplines.test()>Test</button>
+  <!--button onclick=window.shapes.storeShape()>Store shape</button>-->
   <button id=shapes-button onclick=window.shapes.toggleShowShapeList()></button>
 </div>
-<div id=use-modern-browser>Try with a Chromium based browser</div>
+<div id=use-modern-browser>Try with a newer browser</div>
