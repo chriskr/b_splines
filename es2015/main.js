@@ -15,6 +15,8 @@ window.onload = function () {
   } catch (e) {
     if (location.pathname.indexOf('es2015') === -1) {
       location.href = '/b_splines/es2015/index.html';
+    } else {
+      document.querySelector('#use-modern-browser').style.display = 'block';
     }
   }
 };
